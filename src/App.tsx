@@ -1,24 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
+import "./App.css";
+import NewTodo from "./components/NewTodo";
+import Todo from "./components/Todo";
 
 function App() {
+  const [todos, setTodos] = useState<string[]>([]);
+
+  const updateLocalStorage = () => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  };
+
+  const deleteTodo = (todoToDelete: string) => {
+    let updatedTodos = todos.filter((todo: string) => todo !== todoToDelete);
+    setTodos(updatedTodos);
+  };
+
+  const addTodo = (newTodo: string) => {
+    setTodos([...todos, newTodo]);
+  };
+
+  useEffect(() => {
+    try {
+      let localTodos: string[] = JSON.parse(
+        localStorage.getItem("todos") || ""
+      );
+      setTodos(localTodos);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
+
+  useEffect(updateLocalStorage, [todos]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <NewTodo addTodo={addTodo} />
+      {todos.map((todo, index) => (
+        <Todo deleteTodo={deleteTodo} todo={todo} key={uuid()} />
+      ))}
     </div>
   );
 }
