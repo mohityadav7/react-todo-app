@@ -7,24 +7,28 @@ interface Props {
   deleteTodo: Function;
 }
 
-const Todo = ({ todo, deleteTodo }: Props) => {
-  const handleBtnClick = () => {
-    deleteTodo(todo);
+interface State {}
+
+class Todo extends React.Component<Props, State> {
+  handleBtnClick = () => {
+    this.props.deleteTodo(this.props.todo);
   };
 
-  return (
-    <div>
-      <div className='todo'>
-        {todo}
-        <img
-          className='deleteTodoBtn'
-          onClick={handleBtnClick}
-          src={deleteIcon}
-          alt='delete todo button'
-        />
+  render() {
+    return (
+      <div>
+        <div className='todo'>
+          {this.props.todo}
+          <img
+            className='deleteTodoBtn'
+            onClick={this.handleBtnClick}
+            src={deleteIcon}
+            alt='delete todo button'
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default Todo;

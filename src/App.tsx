@@ -1,50 +1,66 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { v4 as uuid } from "uuid";
 import "./App.css";
 import NewTodo from "./components/NewTodo";
 import Todo from "./components/Todo";
 
-function App() {
-  const [todos, setTodos] = useState<string[]>([]);
+interface State {
+  todos: string[];
+}
 
-  const updateLocalStorage = () => {
-    localStorage.setItem("todos", JSON.stringify(todos));
+class App extends React.Component<{}, State> {
+  constructor(props: {}) {
+    super(props);
+    this.state = {
+      todos: [],
+    };
+  }
+
+  updateLocalStorage = () => {
+    localStorage.setItem("todos", JSON.stringify(this.state.todos));
   };
 
-  const deleteTodo = (todoToDelete: string) => {
-    let updatedTodos = todos.filter((todo: string) => todo !== todoToDelete);
-    setTodos(updatedTodos);
+  deleteTodo = (todoToDelete: string) => {
+    let updatedTodos = this.state.todos.filter(
+      (todo: string) => todo !== todoToDelete
+    );
+    this.setState({ todos: updatedTodos });
   };
 
-  const addTodo = (newTodo: string) => {
-    setTodos([...todos, newTodo]);
+  addTodo = (newTodo: string) => {
+    this.setState({ todos: [...this.state.todos, newTodo] });
   };
 
-  useEffect(() => {
+  componentDidMount() {
     try {
       let localTodos: string[] = JSON.parse(
         localStorage.getItem("todos") || ""
       );
-      setTodos(localTodos);
+      this.setState({ todos: localTodos });
     } catch (e) {
       console.log("No saved todos");
     }
-  }, []);
+  }
 
-  useEffect(updateLocalStorage, [todos]);
+  componentDidUpdate() {
+    this.updateLocalStorage();
+  }
 
-  return (
-    <div className='App'>
-      <NewTodo addTodo={addTodo} />
-      {todos.length > 0 && (
-        <div className='todosContainer'>
-          {todos.map((todo, index) => (
-            <Todo deleteTodo={deleteTodo} todo={todo} key={uuid()} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  render() {
+    const { todos } = this.state;
+    return (
+      <div className='App'>
+        <NewTodo addTodo={this.addTodo} />
+        {todos.length > 0 && (
+          <div className='todosContainer'>
+            {todos.map((todo, index) => (
+              <Todo deleteTodo={this.deleteTodo} todo={todo} key={uuid()} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
 export default App;
