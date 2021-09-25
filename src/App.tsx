@@ -27,7 +27,7 @@ function App() {
       );
       setTodos(localTodos);
     } catch (e) {
-      console.log(e);
+      console.log("No saved todos");
     }
   }, []);
 
@@ -36,9 +36,13 @@ function App() {
   return (
     <div className='App'>
       <NewTodo addTodo={addTodo} />
-      {todos.map((todo, index) => (
-        <Todo deleteTodo={deleteTodo} todo={todo} key={uuid()} />
-      ))}
+      {todos.length > 0 && (
+        <div className='todosContainer'>
+          {todos.map((todo, index) => (
+            <Todo deleteTodo={deleteTodo} todo={todo} key={uuid()} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

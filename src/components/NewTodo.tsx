@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/NewTodo.css";
+import addIcon from "../images/add.svg";
 
 interface Props {
   addTodo: Function;
@@ -26,10 +27,16 @@ const NewTodo = ({ addTodo }: Props) => {
           type='text'
           name='todo'
           onChange={handleChange}
-          placeholder='Complete todo app...'
+          placeholder='Add a todo'
+          autoComplete='off'
           value={todoText}
         />
-        <button type='submit'>Add</button>
+        <img
+          onClick={handleSubmit}
+          className='addIcon'
+          src={addIcon}
+          alt='add todo button'
+        />
       </form>
     </div>
   );

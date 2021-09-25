@@ -1,6 +1,13 @@
 .App {
+  padding-top: 2rem;
   max-width: 500px;
   margin: auto;
-  border: 2px solid #eaeaea;
   box-sizing: border-box;
+  color: #444;
+}
+
+.todosContainer {
+  margin-top: 2rem;
+  border: 2px solid #eaeaea;
+  border-bottom: 0;
 }

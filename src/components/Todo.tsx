@@ -1,5 +1,6 @@
 import React from "react";
 import "../styles/Todo.css";
+import deleteIcon from "../images/delete.svg";
 
 interface Props {
   todo: string;
@@ -13,8 +14,15 @@ const Todo = ({ todo, deleteTodo }: Props) => {
 
   return (
     <div>
-      <div className='todo'>{todo}</div>
-      <button onClick={handleBtnClick}>Remove</button>
+      <div className='todo'>
+        {todo}
+        <img
+          className='deleteTodoBtn'
+          onClick={handleBtnClick}
+          src={deleteIcon}
+          alt='delete todo button'
+        />
+      </div>
     </div>
   );
 };
